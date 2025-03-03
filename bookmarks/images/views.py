@@ -26,3 +26,4 @@ def image_create(request):
             # предоставленными букмарклетом методом GET
             form = ImageCreateForm(data=request.GET)
         return redirect(request, 'images/image/create.html', {'section': 'images', 'form': form})
+
