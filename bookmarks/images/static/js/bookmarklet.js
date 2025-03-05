@@ -30,14 +30,14 @@ function bookmarkletLaunch() {
     // Показать букмарклет
     bookmarklet.style.display = 'block';
     // Событие закрытия
-    bookmarklet.querySelector('#close').addEventListener('click', function() {
+    bookmarklet.querySelector('#close').addEventListener('click', function(){
         bookmarklet.style.display = 'none'
     });
 
     // Найти изображение в DOM с минимальными размерами
     images = document.querySelectorAll('img[src$=".jpg"], img[src$=".jpeg"], img[src$=".png"]');
     images.forEach(image => {
-        if (image.naturalWidth >= minWidth 
+        if(image.naturalWidth >= minWidth 
             && image.naturalHeight >= minHeight)
             {
                 var imageFound = document.createElement('img');
