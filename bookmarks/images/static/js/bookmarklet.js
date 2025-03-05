@@ -8,7 +8,7 @@ var head = document.getElementsByTagName('head')[0];
 var link = document.createElement('link');
 link.rel = 'stylesheet';
 link.type = 'text/css';
-link.href = styleUrl + '?r=' + Math.floor(Math.random()*99999999999999999);
+link.href = styleUrl + '?r=' + Math.floor(Math.random()*9999999999999999);
 head.appendChild(link);
 
 // Загрузка HTML
@@ -45,8 +45,20 @@ function bookmarkletLaunch() {
                 imagesFound.append(imageFound);
             }
         })
-    }
-
+    
+    // Событие выбора изображения
+    imagesFound.querySelectorAll('img').forEach(image => {
+        image.addEventListener('click', function(event){
+            imageSelected = event.target;
+            bookmarklet.style.display = 'none';
+            window.open(siteUrl + 'images/create/?url='
+                + encodeURIComponent(imageSelected.src)
+                + '&title='
+                + encodeURIComponent(document.title),
+                '_blank');
+        })
+    })
+}
 
 // Запустить букмарклет
 bookmarkletLaunch();
