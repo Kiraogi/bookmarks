@@ -29,6 +29,9 @@ class Image(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+            if not self.slug:  # Если slug все еще пустой (например, из-за кириллицы)
+                from django.utils.crypto import get_random_string
+                self.slug = get_random_string(10)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
