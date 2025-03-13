@@ -12,13 +12,13 @@
 <div class="image-info">
     <div>
         <span class="count">
-        <span class="total">{{ total_likes }}</span>
-        like{{ total_likes|pluralize }}
+            <span class="total">{{ total_likes }}</span>
+            like{{ total_likes|pluralize }}
         </span>
         <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}
         un{% endif %}like" class="like button">
         {% if request.user not in users_like %}
-        Like
+            Like
         {% else %}
         Unlike
         {% endif %}
@@ -65,6 +65,17 @@ document.querySelector('a.like').addEventListener('click', function(e){
     .then(data => {
         if (data['status'] === 'ok')
         {
+            var previousAction = likeButton.dataset.action;
+
+            // Переключить текст кнопки и атрибут data-action
+            var action = previousAction === 'like' ? 'unlike' : 'like';
+            likeButton.dataset.action = action;
+            likeButton.innerHTML = action;
+
+            // Обновить количество лайков
+            var likeCount = document.querySelector('span.count.total');
+            var totalLikes = parseInt(likeCount.innerHTML);
+            likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes -1;
         }
     })
 });
