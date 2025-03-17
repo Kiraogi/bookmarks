@@ -73,7 +73,7 @@ document.querySelector('a.like').addEventListener('click', function(e){
             likeButton.innerHTML = action;
 
             // Обновить количество лайков
-            var likeCount = document.querySelector('span.count.total');
+            var likeCount = document.querySelector('span.count .total');
             var totalLikes = parseInt(likeCount.innerHTML);
             likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes -1;
         }
