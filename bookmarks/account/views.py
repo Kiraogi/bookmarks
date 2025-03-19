@@ -41,7 +41,7 @@ def dashboard(request):
         # Если пользователь подписан на других,
         # то извлечь только их действия
         actions = actions.filter(user_id__in=following_ids)
-    actions = actions.select_related('user', 'user__profile')[:10]
+    actions = actions.select_related('user', 'user__profile')[:10].prefetch_related('target')[:10]
     return render(request, 'account/dashboard.html', {'section': 'dashboard', 'actions': actions})
 
 def register(request):
