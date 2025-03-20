@@ -36,7 +36,7 @@ def user_login(request):
 def dashboard(request):
     # По умолчанию показывать все действия
     actions= Action.objects.exclude(user=request.user)
-    following_ids = request.user.following.value_list('id', flat=True)
+    following_ids = request.user.following.values_list('id', flat=True)
     if following_ids:
         # Если пользователь подписан на других,
         # то извлечь только их действия
