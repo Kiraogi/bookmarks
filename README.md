@@ -1,2 +1,2 @@
 # bookmarks 
-lazy day (work on pp)
+friday (work on pp)
