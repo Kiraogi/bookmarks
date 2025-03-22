@@ -1,2 +1,2 @@
 # bookmarks 
-friday (work on pp)
+ (work on pp)
