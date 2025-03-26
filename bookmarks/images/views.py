@@ -7,8 +7,8 @@ from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
-from .forms import ImageCreateForm
-from .models import Image
+from .forms import ImageCreateForm, CommentForm
+from .models import Image, Comment
 from actions.utils import create_action
 
 import redis
@@ -42,8 +42,14 @@ def image_detail(request, id, slug):
     total_views = r.incr(f'image:{image.id}:views')
     # Увеличить рейтинг изображения на 1
     r.zincrby('image_ranking', 1, image.id)
+    #Список активных комментариев к этому посту
+    comments = image.comments.filter(active=True)
+    #Форма для комментирования пользователями
+    form = CommentForm()
     return render(request, 'images/image/detail.html', {'section': 'images', 
-                                                        'image': image, 
+                                                        'image': image,
+                                                        'comments': comments,
+                                                        'form': form,
                                                         'total_views': total_views})
 
 @login_required
@@ -103,3 +109,20 @@ def image_ranking(request):
     most_viewed.sort(key=lambda x: image_ranking_ids.index(x.id))
     return render(request, 'images/image/ranking.html', {'section': 'images', 
                                                          'most_viewed': most_viewed})
+
+@require_POST
+def image_comment(request, image_id):
+    image = get_object_or_404(Image, id=image_id, status=Image.Status.PUBLISHED)
+    comment = None
+    #Комментарий был отправлен
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        #Создать объект класса Comment, не сохраняя его в базе данных
+        comment = form.save(commit=False)
+        #Назначить пост комментарию
+        comment.image = image
+        #Сохранить комментарий в базе данных
+        comment.save()
+    return render(request, 'images/templates/images/image/comment.html', {'image': image, 'form': form, 'comment' : comment})
+
+# Доработка формы комментариев

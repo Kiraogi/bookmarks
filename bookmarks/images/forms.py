@@ -4,7 +4,7 @@ from django.utils.text import slugify
 import requests
 
 
-from .models import Image
+from .models import Image, Comment
 
 class ImageCreateForm(forms.ModelForm):
     class Meta:
@@ -35,3 +35,8 @@ class ImageCreateForm(forms.ModelForm):
         if commit:
             image.save()
         return image
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['name', 'email', 'body']
