@@ -37,7 +37,9 @@ def image_create(request):
     return render(request, 'images/image/create.html', {'section': 'images', 'form': form})
 
 def image_detail(request, id, slug):
-    image = get_object_or_404(Image, id=id, slug=slug)
+    image = get_object_or_404(Image, 
+                              id=id, 
+                              slug=slug)
     # Увеличить общие число просмотров изображения на 1
     total_views = r.incr(f'image:{image.id}:views')
     # Увеличить рейтинг изображения на 1
@@ -111,8 +113,8 @@ def image_ranking(request):
                                                          'most_viewed': most_viewed})
 
 @require_POST
-def image_comment(request, image_id):
-    image = get_object_or_404(Image, id=image_id, status=Image.Status.PUBLISHED)
+def post_comment(request, image_id):
+    image = get_object_or_404(Image, id=image_id)
     comment = None
     #Комментарий был отправлен
     form = CommentForm(data=request.POST)
@@ -123,6 +125,6 @@ def image_comment(request, image_id):
         comment.image = image
         #Сохранить комментарий в базе данных
         comment.save()
-    return render(request, 'images/templates/images/image/comment.html', {'image': image, 'form': form, 'comment' : comment})
+    return render(request, 'images/image/comment.html', {'image': image, 'form': form, 'comment' : comment})
 
-# Доработка формы комментариев
+

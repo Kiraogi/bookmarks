@@ -29,6 +29,7 @@
     </div>
     {{ image.description|linebreaks }}
 </div>
+<div>
 <div class="image-likes">
     {% for user in image.users_like.all %}
     <div>
@@ -40,6 +41,8 @@
     {% empty %}
     Nobody likes this image yet.
     {% endfor %}
+</div>
+<div class="comments">
     {% with comments.count as  total_comments %}
     <h2>
         {{ total_comments }} comment{{ total_comments|pluralize }}
@@ -54,10 +57,11 @@
         {{ comment.body|linebreaks }}
     </div>
 </div>
+</div>
 {% empty %}
 <p>There are no comments.</p>
 {% endfor %}
-{% include "images/templates/images/image/include/comment_form.html" %}
+{% include "images/image/include/comment_form.html" %}
 {% endwith %}
 {% endblock %}
 
